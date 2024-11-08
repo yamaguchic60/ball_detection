@@ -3,9 +3,12 @@ import numpy as np
 import time
 
 #set parameters here
-dev_num=0
-capture_time=5
 
+#declear the device number of camera,it is 0 if you have only one camera
+dev_num=0
+capture_time=200
+threshold_of_contour_length=100
+frequency=60
 #some process below
 
 
@@ -16,7 +19,7 @@ start_time=time.time()
 
 
 
-while cv2.waitKey(16):
+while cv2.waitKey(int(1000/frequency)):
     ref,frame=cap.read()
     hsv=cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
 
@@ -34,17 +37,17 @@ while cv2.waitKey(16):
     contours,_=cv2.findContours(gray,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
 
     for countour in contours:
-        if cv2.contourArea(countour)<1000:
+        if cv2.contourArea(countour)>threshold_of_contour_length:
             moment=cv2.moments(countour)
             if moment['m00']!=0:
                 cx=int(moment['m10']/moment['m00'])
                 cy=int(moment['m01']/moment['m00'])
-                cv2.circle(frame,(cx,cy),5,(0,0,255),-1)
+                cv2.circle(frame,(cx,cy),1,(0,0,0),-1)
                 cv2.putText(frame,'center',(cx,cy),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
                 print(f'center:({cx},{cy})')
 
     cv2.drawContours(frame,contours,-1,(0,255,0),2)
-    cv2.imshow('video',frame)
+    cv2.imshow(f'video_{frequency}Hz',frame)
 
 
 
