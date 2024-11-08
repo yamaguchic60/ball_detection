@@ -3,6 +3,9 @@ import numpy as np
 import time
 
 #set parameters here
+dev_num=2
+capture_time=5
+
 
 #declear the device number of camera,it is 0 if you have only one camera
 dev_num=0
