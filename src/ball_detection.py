@@ -8,10 +8,27 @@ capture_time=5
 
 
 #declear the device number of camera,it is 0 if you have only one camera
-dev_num=0
+
+# if you know dev_num, set the dev_num, if you do not know dev_num, set dev_num=-1
+dev_num=-1
+search_range_devices=100
 capture_time=200
 threshold_of_contour_length=100
 frequency=60
+# check video devices can connect
+if dev_num==-1:
+    for i in range(search_range_devices):
+        cap=cv2.VideoCapture(i)
+        if cap.isOpened():
+            dev_num=i
+            cap.release()
+            break
+        else:
+            print(f'i checked {search_range_devices} devices, but i could not find it, confirm that the cable connects correctly.')
+            exit(1)
+
+
+
 #some process below
 
 
