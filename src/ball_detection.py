@@ -22,6 +22,7 @@ if dev_num==-1:
         if cap.isOpened():
             dev_num=i
             cap.release()
+            print(f'camera device number is {dev_num}')
             break
         else:
             print(f'i checked {search_range_devices} devices, but i could not find it, confirm that the cable connects correctly.')
