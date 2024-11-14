@@ -5,6 +5,7 @@ import time
 #set parameters here
 dev_num=2
 capture_time=5
+use_camera=False
 
 
 #declear the device number of camera,it is 0 if you have only one camera
@@ -33,11 +34,14 @@ if dev_num==-1:
 #some process below
 
 
-
-cap=cv2.VideoCapture(dev_num)
+if use_camera:
+    cap=cv2.VideoCapture(dev_num)
+else:
+    cap=cv2.VideoCapture('./../data/air_hockey.mp4')
 cap.set(cv2.CAP_PROP_FPS,60)
 start_time=time.time()
-
+privious_cx=0
+privious_cy=0
 
 
 while cv2.waitKey(int(1000/frequency)):
@@ -66,6 +70,7 @@ while cv2.waitKey(int(1000/frequency)):
                 cv2.circle(frame,(cx,cy),1,(0,0,0),-1)
                 cv2.putText(frame,'center',(cx,cy),cv2.FONT_HERSHEY_SIMPLEX,1,(0,0,255),2)
                 print(f'center:({cx},{cy})')
+                print(f'center_velocity:{(cx-privious_cx)*1000/frequency},{(cy-privious_cy)*1000/frequency}')
 
     cv2.drawContours(frame,contours,-1,(0,255,0),2)
     cv2.imshow(f'video_{frequency}Hz',frame)
